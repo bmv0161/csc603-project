@@ -1,11 +1,10 @@
 #! /bin/bash
-
 kubectl create deployment registry --image=registry
 kubectl expose deploy/registry --port=5000 --type=NodePort
-kubectl patch service registry --type='json' --patch='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value":35000}]'
+kubectl patch service registry --type='json' --patch='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value":31000}]'
 
 docker-compose build
-webscraper/wait-for-it.sh 127.0.0.1:35000 -t 15 -- docker-compose push
+webscraper/wait-for-it.sh 127.0.0.1:31000 -t 15 -- docker-compose push
 
 kubectl create namespace chatbot
 
