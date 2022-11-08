@@ -9,10 +9,9 @@ pipeline {
             }
             steps {
                 sshagent(credentials: ['cloudlab']) {
-                    sh 'scp -r -v -o StrictHostKeyChecking=no *.yaml dp963106@130.127.132.237:~/'
-                    sh 'ssh -o StrictHostKeyChecking=no dp963106@130.127.132.237 kubectl apply -f /users/dp963106/database.yaml -n jenkins'
-                    sh 'ssh -o StrictHostKeyChecking=no dp963106@130.127.132.237 kubectl apply -f /users/dp963106/database_services.yaml -n jenkins'
-
+                    sh 'scp -r -v -o StrictHostKeyChecking=no *.yaml $USER@$NODE_ADDRESS:~/'
+                    sh 'ssh -o StrictHostKeyChecking=no $USER@$NODE_ADDRESS kubectl apply -f /users/$USER/database.yaml -n jenkins'
+                    sh 'ssh -o StrictHostKeyChecking=no $USER@$NODE_ADDRESS kubectl apply -f /users/$USER/database_services.yaml -n jenkins'
                 }
             }
         }
