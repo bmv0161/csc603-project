@@ -1,1 +1,0 @@
-export NODE_ADDRESS=$(hostname -i)
