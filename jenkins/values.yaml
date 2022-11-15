@@ -31,12 +31,12 @@ controller:
   #      - "uname"
   #      - "-a"
   disableRememberMe: false
-  numExecutors: 0
+  numExecutors: 1
   # configures the executor mode of the Jenkins node. Possible values are: NORMAL or EXCLUSIVE
   executorMode: "NORMAL"
   # This is ignored if enableRawHtmlMarkupFormatter is true
   markupFormatter: plainText
-  customJenkinsLabels: []
+  customJenkinsLabels: [deploy]
   # The default configuration uses this secret to configure an admin user
   # If you don't need that user or use a different security realm then you can disable it
   adminSecret: true
@@ -91,7 +91,7 @@ controller:
   # The Protocol can be overwritten by specifying `controller.jenkinsUrlProtocol`.
   # jenkinsUrlProtocol: "https"
   # If you are not using the provided ingress you can specify `controller.jenkinsUrl` to change the url definition.
-  jenkinsUrl: "http://KUBEHEAD:30000"
+  jenkinsUrl: "http://${KUBEHEAD}:30000"
   # If you set this prefix and use ingress controller then you might want to set the ingress path below
   # jenkinsUriPrefix: "/jenkins"
   # Enable pod security context (must be `true` if podSecurityContextOverride, runAsUser or fsGroup are set)
@@ -321,7 +321,22 @@ controller:
   # etc.  Best reference is https://<jenkins_url>/configuration-as-code/reference.  The example below creates a welcome message:
   JCasC:
     defaultConfig: true
-    configScripts: {}
+
+    configScripts:
+      setup-ssh-keys: |
+        credentials:
+          system:
+            domainCredentials:
+              - credentials:
+                  - basicSSHUserPrivateKey:
+                      scope: SYSTEM
+                      id: cloudlab
+                      username: ${USER}
+                      description: "SSH key for Github"
+                      privateKeySource:
+                        directEntry:
+                          privateKey: ${readFile:/users/${USER}/.ssh/id_rsa}
+    
     #  welcome-message: |
     #    jenkins:
     #      systemMessage: Welcome to our CI\CD server.  This Jenkins is configured and managed 'as code'.
