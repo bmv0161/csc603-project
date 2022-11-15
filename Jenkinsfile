@@ -9,9 +9,9 @@ pipeline {
             }
             steps {
                 sshagent(credentials: ['cloudlab']) {
-                    sh 'scp -r -v -o StrictHostKeyChecking=no *.yaml $USER@$NODE_ADDRESS:~/'
-                    sh 'ssh -o StrictHostKeyChecking=no $USER@$NODE_ADDRESS kubectl apply -f /users/$USER/deployment.yaml -n jenkins'
-                    sh 'ssh -o StrictHostKeyChecking=no $USER@$NODE_ADDRESS kubectl apply -f /users/$USER/service.yaml -n jenkins'
+                    sh 'scp -r -v -o StrictHostKeyChecking=no *.yaml $USER@$KUBEHEAD:~/'
+                    sh 'ssh -o StrictHostKeyChecking=no $USER@$KUBEHEAD kubectl apply -f /users/$USER/deployment.yaml -n jenkins'
+                    sh 'ssh -o StrictHostKeyChecking=no $USER@$KUBEHEAD kubectl apply -f /users/$USER/service.yaml -n jenkins'
                 }
             }
         }
