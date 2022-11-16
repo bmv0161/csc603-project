@@ -36,7 +36,7 @@ controller:
   executorMode: "NORMAL"
   # This is ignored if enableRawHtmlMarkupFormatter is true
   markupFormatter: plainText
-  customJenkinsLabels: [deploy]
+  customJenkinsLabels: ["deploy"]
   # The default configuration uses this secret to configure an admin user
   # If you don't need that user or use a different security realm then you can disable it
   adminSecret: true
@@ -321,23 +321,23 @@ controller:
   # etc.  Best reference is https://<jenkins_url>/configuration-as-code/reference.  The example below creates a welcome message:
   JCasC:
     defaultConfig: true
+    configScripts: 
+      setup-ssh-keys: | 
+          credentials:
+            system:
+              domainCredentials:
+                - credentials:
+                    - basicSSHUserPrivateKey:
+                        scope: GLOBAL
+                        id: cloudlab
+                        username: USER
+                        description: "SSH key for Github"
+                        privateKeySource:
+                          directEntry:
+                            privateKey: "replace"
 
-    configScripts: {}
-#       setup-ssh-keys: |
-#         credentials:
-#           system:
-#             domainCredentials:
-#               - credentials:
-#                   - basicSSHUserPrivateKey:
-#                       scope: SYSTEM
-#                       id: cloudlab
-#                       username: ${USER}
-#                       description: "SSH key for Github"
-#                       privateKeySource:
-#                         directEntry:
-#                           privateKey: ${readFile:/users/${USER}/.ssh/id_rsa}
-    
-    #  welcome-message: |
+    # ${readFile:/users/${USER}/.ssh/id_rsa}
+    # welcome-message: |
     #    jenkins:
     #      systemMessage: Welcome to our CI\CD server.  This Jenkins is configured and managed 'as code'.
     # Allows adding to the top-level security JCasC section. For legacy,  default the chart includes apiToken configurations
@@ -841,13 +841,13 @@ agent:
             envVars:
               - containerEnvVar:
                   key: "DOCKER_TOKEN"
-                  value: "dckr_pat_jcDL2WILGnUCESwY9jLGuCFC6Gc"
+                  value: "DOCKER_TOKEN_VALUE"
               - containerEnvVar:
                   key: "DOCKER_REGISTRY"
                   value: "DOCKER_REGISTRY_VALUE"
               - containerEnvVar:
                   key: "DOCKER_USER"
-                  value: "bmv0161"
+                  value: "DOCKER_USER_VALUE"
         volumes:
           - hostPathVolume:
               hostPath: "/var/run/docker.sock"
