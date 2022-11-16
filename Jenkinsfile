@@ -29,12 +29,11 @@ pipeline {
             }
             steps {
                 sshagent(credentials: ['cloudlab']) {
-                    sh "sed -i 's/DOCKER_USER/${docker_user}/g' deployment.yml"
-                    sh "sed -i 's/DOCKER_APP/${docker_app}/g' deployment.yml"
-                    // sh "sed -i 's/BUILD_NUMBER/${env.BUILD_NUMBER}/g' deployment.yml"
-                    sh "scp -r -v -o StrictHostKeyChecking=no *.yml ${USER}@${KUBEHEAD}:~/"
-                    sh "ssh -o StrictHostKeyChecking=no ${USER}@${KUBEHEAD} kubectl apply -f /users/${USER}/deployment.yml -n jenkins"
-                    sh "ssh -o StrictHostKeyChecking=no ${USER}@${NODE_ADDRESS} kubectl apply -f /users/${USER}/service.yml -n jenkins"                                     
+                    sh "sed -i 's/DOCKER_USER/${docker_user}/g' deployment.yaml"
+                    sh "sed -i 's/DOCKER_APP/${docker_app}/g' deployment.yaml"
+                    sh "scp -r -v -o StrictHostKeyChecking=no *.yaml ${USER}@${KUBEHEAD}:~/"
+                    sh "ssh -o StrictHostKeyChecking=no ${USER}@${KUBEHEAD} kubectl apply -f /users/${USER}/deployment.yaml -n jenkins"
+                    sh "ssh -o StrictHostKeyChecking=no ${USER}@${NODE_ADDRESS} kubectl apply -f /users/${USER}/service.yaml -n jenkins"                                     
                 }
             }
         }
