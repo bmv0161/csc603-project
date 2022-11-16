@@ -14,8 +14,9 @@ pipeline {
             }
             steps{
                 container('docker') {
-                    sh "echo ${DOCKER_TOKEN}"
-                    sh "echo ${DOCKER_TOKEN} | docker login --username ${env.DOCKER_USER} --password-stdin"
+                    sh "echo ${env.DOCKER_TOKEN}"
+                    sh "echo ${env.DOCKER_APP}"
+                    sh "echo ${env.DOCKER_TOKEN} | docker login --username ${env.DOCKER_USER} --password-stdin"
                     sh "docker build -t ${registry}:$BUILD_NUMBER ."
                     sh "docker push ${registry}:$BUILD_NUMBER"
                 }
