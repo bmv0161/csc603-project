@@ -10,7 +10,7 @@ spec:
                 spec:
                         containers:
                                 - name: webscraper
-                                  image: DOCKER_USER/DOCKER_APP:latest
+                                  image: DOCKER_USER/DOCKER_APP:BUILD_NUMBER
                                   ports:
                                           - containerPort: 5000
                         restartPolicy: OnFailure
