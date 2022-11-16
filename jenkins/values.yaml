@@ -851,13 +851,13 @@ agent:
             envVars:
               - containerEnvVar:
                   key: "DOCKER_TOKEN"
-                  value: "DOCKER_TOKEN_VALUE"
+                  value: "dckr_pat_jcDL2WILGnUCESwY9jLGuCFC6Gc"
               - containerEnvVar:
                   key: "DOCKER_REGISTRY"
                   value: "DOCKER_REGISTRY_VALUE"
               - containerEnvVar:
                   key: "DOCKER_USER"
-                  value: "DOCKER_USER_VALUE"
+                  value: "bmv0161"
         volumes:
           - hostPathVolume:
               hostPath: "/var/run/docker.sock"
