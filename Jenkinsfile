@@ -14,10 +14,9 @@ pipeline {
             }
             steps{
                 container('docker') {
-                    sh 'echo ${DOCKER_TOKEN}'
                     sh 'echo ${DOCKER_TOKEN} | docker login --username ${DOCKER_USER} --password-stdin'
-                    sh 'docker build -t ${registry}:$BUILD_NUMBER .'
-                    sh 'docker push ${registry}:$BUILD_NUMBER'
+                    sh 'docker build -t ${registry} -t ${registry}:$BUILD_NUMBER .'
+                    sh 'docker push ${registry}'
                 }
             }
         }
@@ -31,10 +30,10 @@ pipeline {
                 sshagent(credentials: ['cloudlab']) {
                     sh "sed -i 's/DOCKER_USER/${docker_user}/g' deployment.yaml"
                     sh "sed -i 's/DOCKER_APP/${docker_app}/g' deployment.yaml"
-                    sh "sed -i 's/BUILD_NUMBER/${BUILD_NUMBER}/g' deployment.yaml"
-                    sh "scp -r -v -o StrictHostKeyChecking=no *.yaml ${USER}@${KUBEHEAD}:~/"
-                    sh "ssh -o StrictHostKeyChecking=no ${USER}@${KUBEHEAD} kubectl apply -f /users/${USER}/deployment.yaml -n jenkins"
-                    sh "ssh -o StrictHostKeyChecking=no ${USER}@${KUBEHEAD} kubectl apply -f /users/${USER}/service.yaml -n jenkins"                                     
+                    // sh "sed -i 's/BUILD_NUMBER/${BUILD_NUMBER}/g' deployment.yaml"
+                    sh 'scp -r -v -o StrictHostKeyChecking=no *.yaml ${USER}@${KUBEHEAD}:~/'
+                    sh 'ssh -o StrictHostKeyChecking=no ${USER}@${KUBEHEAD} kubectl apply -f /users/${USER}/deployment.yaml -n jenkins'
+                    sh 'ssh -o StrictHostKeyChecking=no ${USER}@${KUBEHEAD} kubectl apply -f /users/${USER}/service.yaml -n jenkins'                                   
                 }
             }
         }
