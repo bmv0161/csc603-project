@@ -14,10 +14,10 @@ spec:
                 spec:
                         containers:
                                 - name: chatbot-rasa
-                                  image: 127.0.0.1:35000/chatbot-rasa:0.3
+                                  image: DOCKER_APP:latest
                                   ports:
                                           - containerPort: 5005
                                 - name: chatbot-actions
-                                  image: 127.0.0.1:35000/chatbot-actions:0.1
+                                  image: DOCKER_APP2:latest
                                   ports:
                                           - containerPort: 5055
