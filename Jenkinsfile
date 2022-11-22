@@ -27,6 +27,7 @@ pipeline {
             steps {
                 sshagent(credentials: ['cloudlab']) {
                     sh "sed -i 's#DOCKER_REGISTRY#${registry}#g' deployment.yaml"
+                    sh 'ssh -o StrictHostKeyChecking=no ${USER}@${KUBEHEAD} mkdir -p /users/${USER}/webui'
                     sh 'scp -r -v -o StrictHostKeyChecking=no *.yaml ${USER}@${KUBEHEAD}:~/webui'
                     sh 'ssh -o StrictHostKeyChecking=no ${USER}@${KUBEHEAD} kubectl apply -f /users/${USER}/webui/deployment.yaml -n jenkins'
                     sh 'ssh -o StrictHostKeyChecking=no ${USER}@${KUBEHEAD} kubectl apply -f /users/${USER}/webui/service.yaml -n jenkins'                                   
