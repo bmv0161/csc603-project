@@ -1,6 +1,6 @@
 FROM rasa/rasa:main-spacy-en
-WORKDIR '/app'
-COPY . /app
+WORKDIR /app
+COPY ./chatbot/app/. .
 USER root
 #COPY ./data /app/data
 RUN  rasa train
