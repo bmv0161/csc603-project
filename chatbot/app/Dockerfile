@@ -3,6 +3,6 @@ WORKDIR /app
 COPY ./chatbot/app/. .
 USER root
 #COPY ./data /app/data
-RUN  rasa train
+RUN  rasa train --quiet
 VOLUME /app/models
 CMD ["run","-m","/app/models","--enable-api","--cors","*", "--debug", "--endpoints", "endpoints.yml", "--log-file", "out.log", "--debug"]
