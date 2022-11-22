@@ -1,7 +1,7 @@
 FROM rasa/rasa-sdk
 
 WORKDIR /app
-COPY ./chatbot/app/actions/. .
+COPY ./app/actions/. .
 USER root
 RUN pip install --verbose -r requirements.txt
 
