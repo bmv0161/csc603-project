@@ -14,6 +14,7 @@ pipeline {
             }
             steps{
                 container('docker') {
+                    sh 'echo $WORKSPACE'
                     sh 'echo ${DOCKER_TOKEN} | docker login --username ${DOCKER_USER} --password-stdin'
                     sh 'docker build -t ${docker_chatbot} -t ${docker_chatbot}:$BUILD_NUMBER -f $WORKSPACE/app/Dockerfile .'
                     sh 'docker build -t ${docker_actions} -t ${docker_actions}:$BUILD_NUMBER -f $WORKSPACE/app/actions/Dockerfile .'
