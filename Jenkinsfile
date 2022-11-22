@@ -17,8 +17,8 @@ pipeline {
                     sh "ls"
                     sh "pwd"
                     sh 'echo ${DOCKER_TOKEN} | docker login --username ${DOCKER_USER} --password-stdin'
-                    sh 'docker build -t ${docker_app} -t ${docker_app}:$BUILD_NUMBER -f ~/chatbot/app/Dockerfile .'
-                    sh 'docker build -t ${docker_app2} -t ${docker_app2}:$BUILD_NUMBER -f ~/chatbot/app/actions/Dockerfile .'
+                    sh 'docker build -t ${docker_app} -t ${docker_app}:$BUILD_NUMBER -f $WORKSPACE/chatbot/app/Dockerfile .'
+                    sh 'docker build -t ${docker_app2} -t ${docker_app2}:$BUILD_NUMBER -f $WORKSPACE/chatbot/app/actions/Dockerfile .'
 
                     sh 'docker push ${docker_app}'
                     sh 'docker push ${docker_app2}'
