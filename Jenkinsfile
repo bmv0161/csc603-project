@@ -15,7 +15,7 @@ pipeline {
             steps{
                 container('docker') {
                     sh 'echo ${DOCKER_TOKEN} | docker login --username ${DOCKER_USER} --password-stdin'
-                    sh 'docker build -t ${registry} -t ${registry}:$BUILD_NUMBER .'
+                    sh 'docker build -t ${registry} -t ${registry}:$BUILD_NUMBER -f $WORKSPACE/webui/nginx/Dockerfile .'
                     sh 'docker push ${registry}'
                 }
             }
