@@ -27,8 +27,8 @@ pipeline {
             steps {
                 sshagent(credentials: ['cloudlab']) {
                     sh "sed -i 's#DOCKER_REGISTRY#${registry}#g' deployment.yaml"
-                    sh "mkdir -p webscraper && mv *.yaml webscraper"
-                    sh 'scp -pr -v -o StrictHostKeyChecking=no websraper ${USER}@${KUBEHEAD}:~/webscraper'
+                    sh 'ssh -o StrictHostKeyChecking=no ${USER}@${KUBEHEAD} mkdir -p /users/${USER}/webscraper'
+                    sh 'scp -pr -v -o StrictHostKeyChecking=no *.yaml ${USER}@${KUBEHEAD}:~/webscraper'
                     sh 'ssh -o StrictHostKeyChecking=no ${USER}@${KUBEHEAD} kubectl apply -f /users/${USER}/webscraper/deployment.yaml -n jenkins'
                     sh 'ssh -o StrictHostKeyChecking=no ${USER}@${KUBEHEAD} kubectl apply -f /users/${USER}/webscraper/service.yaml -n jenkins'                                   
                 }
