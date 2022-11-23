@@ -18,8 +18,8 @@ pipeline {
                     sh 'docker build -t ${docker_chatbot} -t ${KUBEHEAD}:443/${docker_chatbot}:$BUILD_NUMBER -f $WORKSPACE/app/Dockerfile .'
                     sh 'docker build -t ${docker_actions} -t ${KUBEHEAD}:443/${docker_actions}:$BUILD_NUMBER -f $WORKSPACE/app/actions/Dockerfile .'
 
-                    sh 'docker push -a ${KUBEHEAD}:443/${docker_chatbot}'
-                    sh 'docker push -a ${KUBEHEAD}:443/${docker_actions}'
+                    sh 'docker push ${KUBEHEAD}:443/${docker_chatbot}'
+                    sh 'docker push ${KUBEHEAD}:443/${docker_actions}'
                 }
             }
         }
