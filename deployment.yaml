@@ -14,11 +14,11 @@ spec:
                 spec:
                         containers:
                                 - name: chatbot-rasa
-                                  image: REGISTRY:443/DOCKER_CHATBOT:latest
+                                  image: REGISTRY:443/DOCKER_CHATBOT
                                   ports:
                                           - containerPort: 5005
                                 - name: chatbot-actions
-                                  image: REGISTRY:443/DOCKER_ACTIONS:latest
+                                  image: REGISTRY:443/DOCKER_ACTIONS
                                   ports:
                                           - containerPort: 5055
                         imagePullSecrets:
