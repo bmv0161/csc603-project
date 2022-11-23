@@ -14,3 +14,5 @@ spec:
                                   ports:
                                           - containerPort: 5000
                         restartPolicy: OnFailure
+                        imagePullSecrets:
+                                - name: regcred
