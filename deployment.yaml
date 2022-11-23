@@ -21,3 +21,5 @@ spec:
                                   image: REGISTRY:443/DOCKER_ACTIONS:latest
                                   ports:
                                           - containerPort: 5055
+                        imagePullSecrets:
+                                - name: regcred
