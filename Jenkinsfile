@@ -1,8 +1,8 @@
 pipeline {
     agent none 
     environment {
-        docker_chatbot = "bmv0161/csc603-chatbot"
-        docker_actions = "bmv0161/csc603-actions"
+        docker_chatbot = "csc603-chatbot"
+        docker_actions = "csc603-actions"
     }
 
     stages {
