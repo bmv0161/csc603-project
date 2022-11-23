@@ -1,7 +1,7 @@
 pipeline {
     agent none 
     environment {
-        docker_image = '${KUBEHEAD}:443/csc603-webscraper'
+        docker_image = "${KUBEHEAD}:443/csc603-webscraper"
     }
     stages {
         stage('Publish') {
