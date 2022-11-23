@@ -28,7 +28,7 @@ pipeline {
                 sshagent(credentials: ['cloudlab']) {
                     sh "sed -i 's#DOCKER_IMAGE#${docker_image}#g' deployment.yaml"
                     sh 'ssh -o StrictHostKeyChecking=no ${USER}@${KUBEHEAD} mkdir -p /users/${USER}/webscraper'
-                    sh 'ssh -o StrictHostKeyChecking=no ${USER}@${KUBEHEAD} [ -f /users/${USER}/webscraper/deployment.yaml ] && kubectl delete -f /users/${USER}/webscraper/deployment.yaml'
+                    sh 'ssh -o StrictHostKeyChecking=no ${USER}@${KUBEHEAD} "[ -f /users/${USER}/webscraper/deployment.yaml ] && kubectl delete -f /users/${USER}/webscraper/deployment.yaml"'
                     sh 'scp -pr -v -o StrictHostKeyChecking=no *.yaml ${USER}@${KUBEHEAD}:~/webscraper'
                     sh 'ssh -o StrictHostKeyChecking=no ${USER}@${KUBEHEAD} kubectl apply -f /users/${USER}/webscraper/deployment.yaml -n jenkins'
                     sh 'ssh -o StrictHostKeyChecking=no ${USER}@${KUBEHEAD} kubectl apply -f /users/${USER}/webscraper/service.yaml -n jenkins'                                   
