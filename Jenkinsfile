@@ -1,7 +1,7 @@
 pipeline {
     agent none 
     environment {
-        registry = "bmv0161/csc603-webscraper"
+        docker_image = '${KUBEHEAD}:443/csc603-webscraper'
     }
     stages {
         stage('Publish') {
@@ -12,9 +12,9 @@ pipeline {
             }
             steps{
                 container('docker') {
-                    sh 'echo ${DOCKER_TOKEN} | docker login --username ${DOCKER_USER} --password-stdin'
-                    sh 'docker build -t ${registry} -t ${registry}:$BUILD_NUMBER -f $WORKSPACE/app/Dockerfile .'
-                    sh 'docker push ${registry}'
+                    sh 'docker login -u admin -p registry https://${KUBEHEAD}:443'
+                    sh 'docker build -t ${docker_image} -t ${docker_image}:$BUILD_NUMBER -f $WORKSPACE/app/Dockerfile .'
+                    sh 'docker push ${docker_image}'
                 }
             }
         }
@@ -26,7 +26,7 @@ pipeline {
             }
             steps {
                 sshagent(credentials: ['cloudlab']) {
-                    sh "sed -i 's#DOCKER_REGISTRY#${registry}#g' deployment.yaml"
+                    sh "sed -i 's#DOCKER_IMAGE#${docker_image}#g' deployment.yaml"
                     sh 'ssh -o StrictHostKeyChecking=no ${USER}@${KUBEHEAD} mkdir -p /users/${USER}/webscraper'
                     sh 'scp -pr -v -o StrictHostKeyChecking=no *.yaml ${USER}@${KUBEHEAD}:~/webscraper'
                     sh 'ssh -o StrictHostKeyChecking=no ${USER}@${KUBEHEAD} kubectl apply -f /users/${USER}/webscraper/deployment.yaml -n jenkins'
