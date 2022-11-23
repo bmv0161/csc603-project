@@ -2,7 +2,8 @@ pipeline {
     agent none 
     environment {
         app_name = "webui"
-        docker_image = "${KUBEHEAD}:443/${app_name}"
+        registry = "${KUBEHEAD}:443"
+        docker_image = "${registry}/${app_name}"
     }
     stages {
         stage('Publish') {
@@ -13,7 +14,7 @@ pipeline {
             }
             steps{
                 container('docker') {
-                    sh 'docker login -u admin -p registry https://${KUBEHEAD}:443'
+                    sh 'docker login -u admin -p registry https://${registry}'
                     sh 'docker build -t ${docker_image} -t ${docker_image}:$BUILD_NUMBER -f $WORKSPACE/${app_name}/Dockerfile .'
                     sh 'docker push -a ${docker_image}'
                 }
