@@ -12,3 +12,4 @@ sed -i "s/REPLACEME_KUBEHEAD/${KUBEHEAD}/g" values.yaml
 
 helm install -f values.yaml jenkins/jenkins --generate-name
 
+kubectl create namespace jenkins
