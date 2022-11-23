@@ -1,7 +1,8 @@
 pipeline {
     agent none 
     environment {
-        registry = "bmv0161/csc603-webui"
+        app_name = "webui"
+        docker_image = "${KUBEHEAD}:443/${app_name}"
     }
     stages {
         stage('Publish') {
@@ -12,9 +13,9 @@ pipeline {
             }
             steps{
                 container('docker') {
-                    sh 'echo ${DOCKER_TOKEN} | docker login --username ${DOCKER_USER} --password-stdin'
-                    sh 'docker build -t ${registry} -t ${registry}:$BUILD_NUMBER -f $WORKSPACE/webui/Dockerfile .'
-                    sh 'docker push ${registry}'
+                    sh 'docker login -u admin -p registry https://${KUBEHEAD}:443'
+                    sh 'docker build -t ${docker_image} -t ${docker_image}:$BUILD_NUMBER -f $WORKSPACE/${app_name}/Dockerfile .'
+                    sh 'docker push -a ${docker_image}'
                 }
             }
         }
@@ -26,11 +27,11 @@ pipeline {
             }
             steps {
                 sshagent(credentials: ['cloudlab']) {
-                    sh "sed -i 's#DOCKER_REGISTRY#${registry}#g' deployment.yaml"
-                    sh 'ssh -o StrictHostKeyChecking=no ${USER}@${KUBEHEAD} mkdir -p /users/${USER}/webui'
-                    sh 'scp -r -v -o StrictHostKeyChecking=no *.yaml ${USER}@${KUBEHEAD}:~/webui'
-                    sh 'ssh -o StrictHostKeyChecking=no ${USER}@${KUBEHEAD} kubectl apply -f /users/${USER}/webui/deployment.yaml -n jenkins'
-                    sh 'ssh -o StrictHostKeyChecking=no ${USER}@${KUBEHEAD} kubectl apply -f /users/${USER}/webui/service.yaml -n jenkins'                                   
+                    sh "sed -i 's#DOCKER_IMAGE#${docker_image}#g' deployment.yaml"
+                    sh 'ssh -o StrictHostKeyChecking=no ${USER}@${KUBEHEAD} mkdir -p /users/${USER}/${app_name}'
+                    sh 'scp -r -v -o StrictHostKeyChecking=no *.yaml ${USER}@${KUBEHEAD}:~/${app_name}'
+                    sh 'ssh -o StrictHostKeyChecking=no ${USER}@${KUBEHEAD} kubectl apply -f /users/${USER}/${app_name}/deployment.yaml -n jenkins'
+                    sh 'ssh -o StrictHostKeyChecking=no ${USER}@${KUBEHEAD} kubectl apply -f /users/${USER}/${app_name}/service.yaml -n jenkins'                                   
                 }
             }
         }

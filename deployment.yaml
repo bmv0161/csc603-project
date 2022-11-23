@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: webui
-        image: DOCKER_REGISTRY:latest
+        image: DOCKER_IMAGE:latest
         ports:
         - containerPort: 80
