@@ -334,7 +334,7 @@ controller:
                         description: "SSH key for Github"
                         privateKeySource:
                           directEntry:
-                            privateKey: "replace"
+                            privateKey: "REPLACEME_SSHKEY"
     
       global-vars: |
           jenkins:
