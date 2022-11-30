@@ -9,8 +9,7 @@ export KUBEHEAD=$(kubectl get nodes -o custom-columns=NAME:.status.addresses[1].
 cp /users/$USER/csc603-project/jenkins/values.yaml .
 sed -i "s/REPLACEME_USER/${USER}/g" values.yaml
 sed -i "s/REPLACEME_KUBEHEAD/${KUBEHEAD}/g" values.yaml
-sed -i "s/REPLACEME_SSHKEYS/$(cat /users/$USER/.ssh/id_rsa | sed ':a;N;$!ba;s/\n/\\\\n/g'))/g" values.yaml
-
+sed -i "s|REPLACEME_SSHKEY|$(cat /users/$USER/.ssh/id_rsa | sed ':a;N;$!ba;s/\n/\\\\n/g')|g" values.yaml
 helm install -f values.yaml jenkins/jenkins --generate-name
 
 kubectl create namespace jenkins

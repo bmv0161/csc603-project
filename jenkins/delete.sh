@@ -1,2 +1,2 @@
 helm uninstall $1
-helm delete namespace jenkins
+kubectl delete namespace jenkins
